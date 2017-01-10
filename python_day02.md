@@ -126,3 +126,167 @@ import语句告诉python，我们要用random模块中的内容。然后便可�
     from math import pi as math_pi
     print math_pi
     
+##函数的默认参数
+定义一个函数
+
+```python
+def hello(name):
+   print 'hello ' + name
+```
+然后我们去调用这个函数
+
+```python
+hello('world')
+```
+程序就会输出
+
+    hello world
+    
+
+如果很多时候，我们都是用world来调用这个函数，少数情况才会去改参数。那么，我们就可以给这个函数一个默认参数：
+
+```python
+def hello(name = 'world'):
+   print 'hello ' + name
+```
+
+注意，当函数有多个参数时，如果你想给部分参数提供默认参数，那么这些参数必须在参数的末尾。比如：
+
+```python
+def func(a, b=5)#是正确的
+def func(a=5, b)#就会出错
+```
+
+##对象和类
+关键字class加上类名用来创建一个类。之后缩进的代码块是这个类的内部。在这里，我们用pass语句，表示一个空的代码块。
+
+```python
+class MyClass:
+    pass
+
+mc = MyClass()
+print mc
+```
+
+输出结果：
+
+    <__main__.MyClass instance at 0x7fd1c8d01200>
+    
+这个意思就是说，mc是__main__模块中MyClass来的一个实例（instance），后面的一串十六进制的数字是这个对象的内存地址。
+
+给这个类加上一些域：
+
+```python
+class MyClass:
+    name = 'Sam'
+
+    def sayHi(self):
+        print 'Hello %s' % self.name
+
+mc = MyClass()
+print mc.name
+mc.name = 'Lily'
+mc.sayHi()
+```
+
+MyClass类增加了一个类变量name，并把它的值设为'Sam'。然后又增加了一个类方法sayHi。调用类变量的方法是“对象.变量名”。你可以得到它的值，也可以改变它的值。
+
+注意到，类方法和我们之前定义的函数区别在于，第一个参数必须为self。而在调用类方法的时候，通过“对象.方法名()”格式进行调用，而不需要额外提供self这个参数的值。self在类方法中的值，就是你调用的这个对象本身。
+
+输出结果：
+
+    Sam
+    Hello Lily
+
+之后，在你需要用到MyClass这种类型对象的地方，就可以创建并使用它。
+
+##类继承
+Vehicle类被称为基本类或超类，Car类和Bike类被成为导出类或子类。
+
+```python
+#父类
+class Vehicle:
+	#构造函数
+    def __init__(self, speed):
+        self.speed = speed
+
+    def drive(self, distance):
+        print 'need %f hour(s)' % (distance / self.speed)
+
+#子类Bike继承自Vehicle
+class Bike(Vehicle):
+    pass
+
+#子类Car继承自Vehicle
+class Car(Vehicle):
+    def __init__(self, speed, fuel):
+        Vehicle.__init__(self, speed)
+        self.fuel = fuel
+
+    def drive(self, distance):
+        Vehicle.drive(self, distance)
+        print 'need %f fuels' % (distance * self.fuel)
+
+b = Bike(15.0)
+c = Car(80.0, 0.012)
+b.drive(100.0)
+c.drive(100.0)
+
+```
+
+##and or
+看下代码就明白了，有学过c/c++/java的同学应该会发现，三元运算符（bool?a:b）
+
+```python
+a = "heaven"
+b = "hell"
+c = True and a or b
+print c
+d = False and a or b
+print d
+```
+输出
+    
+    heaven
+    hell
+
+##元组
+元组（tuple）也是一种序列，和我们用了很多次的list类似，只是元组中的元素在创建之后就不能被修改，比如：
+
+```python
+postion = (1, 2)
+geeks = ('Sheldon', 'Leonard', 'Rajesh', 'Howard')
+```
+都是元组的实例。它有和list同样的索引、切片、遍历等操作
+
+```python
+print postion[0]
+for g in geeks:
+    print g
+print geeks[1:3]
+```
+其实我们之前一直在用元组，就是在print语句中：
+
+```python
+print '%s is %d years old' % ('Mike', 23)
+```
+('Mike', 23)就是一个元组, 这是元组最常见的用处
+
+```python
+def get_pos(n):
+    return (n/2, n*2)
+```
+得到这个函数的返回值有两种形式，一种是根据返回值元组中元素的个数提供变量：
+
+```python
+x, y = get_pos(50)
+print x
+print y
+```
+还有一种方法是用一个变量记录返回的元组：
+
+```python
+pos = get_pos(50)
+print pos[0]
+print pos[1]
+```
