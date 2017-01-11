@@ -73,3 +73,73 @@ pickle.dump(data, f, True)
 而 load 方法会自动检测数据是二进制还是文本格式，无需手动指定。
 
 Python 还提供了另一个模块 cPickle，它的功能及用法和 pickle 模块完全相同，只不过它是用C语言编写的，因此要快得多（比pickle快1000倍）。因此你可以把上述代码中的 pickle 全部替换为 cPickle，从而提高运行速度
+
+##lambda 表达式
+lambda 表达可以被看做是一种匿名函数。它可以让你快速定义一个极度简单的单行函数。譬如这样一个实现三个数相加的函数：
+
+```python
+def sum(a, b, c):
+return a + b + c
+
+print sum(1, 2, 3)
+print sum(4, 5, 6)
+```
+输出：
+
+    6
+    15
+
+如果使用 lambda 表达式来实现：
+
+```python
+sum = lambda a, b, c: a + b + c
+
+print sum(1, 2, 3)
+print sum(4, 5, 6)
+```
+输出:
+    
+    6
+    15
+    
+两种方法的结果是相同的。
+
+lambda 表达式的语法格式： `lambda 参数列表: 表达式`
+
+定义 lambda 表达式时，参数列表周围没有括号，返回值前没有 return 关键字，也没有函数名称。
+
+它的写法比 def 更加简洁。但是，它的主体只能是一个表达式，不可以是代码块，甚至不能是命令（print 不能用在 lambda 表达式中）。所以 lambda 表达式能表达的逻辑很有限。
+
+##map 函数
+来看两个问题：
+1. 假设有一个数列，如何把其中每一个元素都翻倍？
+2. 假设有两个数列，如何求和？
+
+第一个问题，普通程序员大概会这么写：
+
+```python
+lst_1 = [1,2,3,4,5,6]
+lst_2 = []
+for item in lst_1:
+	lst_2.append(item * 2)
+print lst_2
+```
+Python 程序员大概会这么写：
+
+```python
+lst_1 = [1,2,3,4,5,6]
+lst_2 = [i * 2 for i in lst_1]
+print lst_2
+```
+另一种 Python 程序员常用的写法 -- map：
+
+```python
+lst_1 = [1,2,3,4,5,6]
+def double_func(x):
+return x * 2
+lst_2 = map(double_func, lst_1)
+print lst_2
+```
+map 是 Python 自带的内置函数，它的作用是把一个函数应用在一个（或多个）序列上，把列表中的每一项作为函数输入进行计算，再把计算的结果以列表的形式返回。
+
+map 的第一个参数是一个函数，之后的参数是序列，可以是 list、tuple。
