@@ -1,0 +1,75 @@
+#Python Day03
+
+#pickle
+在使用文件存储时，通常需要对数据进行一些处理，按照一定的规范把数据整理成文本，再写入文件中。下次使用时，从文件中读出文本，再按照此规范解析这些数据。
+
+这种将数据转成文本的过程又被称为“序列化”，即将对象状态转换为可保持或传输的格式的过程。对应的，从序列化的格式中解析对象状态的过程被称为“反序列化”。
+
+其实 Python 提供了一个标准模块来做这件事，就是 pickle。它可以把任何 Python 对象存储在文件中，再把它原样取出来。
+
+```python
+import pickle
+
+test_data = ['Save me!', 123.456, True]
+
+f = file('test.data', 'w')
+pickle.dump(test_data, f)
+f.close()
+```
+这样，我们就把 test_data 这个 list 存储在了文件 test.data 中。你可以用文本编辑器打开 test.data 查看里面的内容：
+
+```python
+(lp0
+S'Save me!'
+p1
+aF123.456
+aI01
+a.
+```
+这就是经 pickle 序列化后的数据，隐约可以看到之前对象的影子。你可能无法看出这个文件的规律，这没关系，Python 能看懂就可以了。
+
+下面取存储的过程：
+
+```python
+import pickle
+
+f = file('test.data')
+test_data = pickle.load(f)
+f.close()
+
+print test_data
+```
+控制台的输出：
+
+    ['Save me!', 123.456, True]
+    
+如果你想保存多个对象，一种方法是把这些对象先全部放在一个序列中，在对这个序列进行存储：
+
+```python
+a = 123
+b = "hello"
+c = 0.618
+data = (a, b, c)
+
+pickle.dump(data, f)
+```
+另一种方法就是依次保存和提取：
+
+```python
+pickle.dump(a, f)
+pickle.dump(b, f)
+pickle.dump(c, f)
+
+x = pickle.load(f)
+y = pickle.load(f)
+z = pickle.load(f)
+```
+
+dump 方法可以增加一个可选的参数，来指定用二进制来存储：
+
+```python
+pickle.dump(data, f, True)
+```
+而 load 方法会自动检测数据是二进制还是文本格式，无需手动指定。
+
+Python 还提供了另一个模块 cPickle，它的功能及用法和 pickle 模块完全相同，只不过它是用C语言编写的，因此要快得多（比pickle快1000倍）。因此你可以把上述代码中的 pickle 全部替换为 cPickle，从而提高运行速度
